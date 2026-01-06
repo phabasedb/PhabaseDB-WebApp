@@ -9,7 +9,7 @@ import { Box } from "@mui/material";
 import theme from "mui-config/theme";
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
-import WebServiceProvider from "@/components/WebService/client/Provider";
+import ApolloGraphQLProvider from "@/integrations/graphql/client/Provider";
 
 export const metadata = {
   title: "PhabaseDB",
@@ -34,7 +34,7 @@ export default function RootLayout({ children }) {
       />
       <link rel="manifest" href="/favicon/site.webmanifest" />
       <body>
-        <WebServiceProvider>
+        <ApolloGraphQLProvider>
           <ThemeProvider theme={theme}>
             <Box className="main-container">
               <Box className="background-box" />
@@ -43,7 +43,7 @@ export default function RootLayout({ children }) {
               <Footer />
             </Box>
           </ThemeProvider>
-        </WebServiceProvider>
+        </ApolloGraphQLProvider>
       </body>
     </html>
   );

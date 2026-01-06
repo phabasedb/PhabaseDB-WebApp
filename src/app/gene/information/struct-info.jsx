@@ -1,14 +1,11 @@
-// standard
-
 // third party
 import {
   Box,
   Typography,
   ToggleButton,
   ToggleButtonGroup,
+  Button,
 } from "@mui/material";
-
-// local
 
 // shared styles
 const commonTypographyStyle = {
@@ -78,7 +75,20 @@ export default function StructInfo({
   transcripts,
   selectedTranscriptId,
   onSelectTranscript,
+  onNavClick,
+  onBlastClick,
+  showExpression,
 }) {
+  // 👇 Definición dinámica de botones de navegación
+  const navButtons = [
+    { label: "SEQUENCES", key: "SEQUENCES-NV" },
+    { label: "JBROWSER", key: "JBROWSER-NV" },
+  ];
+  if (showExpression) {
+    navButtons.push({ label: "EXPRESSION", key: "EXPRESSION-NV" });
+  }
+  navButtons.push({ label: "BLAST", key: "BLAST-NV" });
+
   return (
     <Box
       sx={{
@@ -146,6 +156,32 @@ export default function StructInfo({
           <InfoItem label="Location" value={`${gene?.start} - ${gene?.end}`} />
           <InfoItem label="Description" value={gene?.description} />
         </Box>
+      </Box>
+      <Box
+        sx={{
+          width: "90%",
+          display: "flex",
+          flexWrap: "wrap",
+          gap: 1,
+          justifyContent: "center",
+          mt: 2,
+        }}
+      >
+        {navButtons.map((btn) => (
+          <Button
+            key={btn.key}
+            variant="contained"
+            value={btn.key}
+            onClick={() =>
+              btn.key === "BLAST-NV" ? onBlastClick() : onNavClick(btn.key)
+            }
+            sx={{
+              textTransform: "none",
+            }}
+          >
+            {btn.label}
+          </Button>
+        ))}
       </Box>
     </Box>
   );

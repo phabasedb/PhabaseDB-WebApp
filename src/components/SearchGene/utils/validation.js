@@ -1,3 +1,10 @@
+/**
+ * Validation rules for gene search input.
+ *
+ * Defines the minimum length and a sequence of validation
+ * constraints applied to user-provided search terms.
+ */
+
 export const MIN_INPUT_LENGTH = 3;
 
 export const VALID_INPUT_TERM = [

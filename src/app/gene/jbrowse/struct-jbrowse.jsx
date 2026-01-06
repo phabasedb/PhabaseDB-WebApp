@@ -7,10 +7,10 @@ import { useMemo } from "react";
 import { Box } from "@mui/material";
 
 // local
-import { buildJBrowseUrlFromCoords } from "@/shared/jbrowse/build-url-from-coords";
 import { datasets } from "@/static/jbrowse/datasets";
-import ErrorBoxPageGene from "../shared/components/ErrorBox";
-import { USER_ERROR_MESSAGE } from "@/shared/jbrowse/validation";
+import { buildJBrowseUrlFromCoords } from "@/shared/jbrowse/build-url-from-coords";
+import ErrorBox from "../shared/components/ErrorBox";
+import { USER_ERROR_JBROWSE_MESSAGE } from "@/shared/jbrowse/validation";
 
 export default function StructJBrowse({ gene, organism, chromosome }) {
   const { url, internalMessage } = useMemo(() => {
@@ -53,7 +53,7 @@ export default function StructJBrowse({ gene, organism, chromosome }) {
       console.error("JBrowse:", internalMessage);
     }
 
-    return <ErrorBoxPageGene text={USER_ERROR_MESSAGE} />;
+    return <ErrorBox text={USER_ERROR_JBROWSE_MESSAGE} />;
   }
 
   return (

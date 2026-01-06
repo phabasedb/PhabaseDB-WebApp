@@ -1,11 +1,5 @@
-//standard
-
-// third party
-
-//local
-
 /**
- * Reads history from localStorage under key `key`.
+ * Reads a search history array from localStorage.
  */
 export function readHistory(key = "searchHistory") {
   try {
@@ -16,11 +10,10 @@ export function readHistory(key = "searchHistory") {
 }
 
 /**
- * Add term to history, remove duplicates and trim to `limit`.
- * @param {string[]} historyArray Previous Term array
- * @param {string} term Term to add
- * @param {number} limit Maximum history size
- * @returns {string[]} New history array
+ * Updates a search history list.
+ *
+ * Removes duplicates, prepends the new term,
+ * and trims the list to the specified limit.
  */
 export function updateHistoryArray(historyArray, term, limit) {
   const filtered = historyArray.filter((t) => t !== term);
@@ -29,7 +22,7 @@ export function updateHistoryArray(historyArray, term, limit) {
 }
 
 /**
- * Writes the array to localStorage under the key `key`.
+ * Persists a search history array in localStorage.
  */
 export function writeHistory(array, key = "searchHistory") {
   localStorage.setItem(key, JSON.stringify(array));

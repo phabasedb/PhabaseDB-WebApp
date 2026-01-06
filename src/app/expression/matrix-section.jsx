@@ -8,10 +8,10 @@ import MUIDataTable from "mui-datatables";
 
 //local
 import { useGenesIdsMatrix } from "@/components/ApiService/Expression";
-import { flattenExpressionData } from "@/shared/expression/utils/flatten-expression";
-import { pivotableExpressionDataMui } from "@/shared/expression/utils/pivotablemui-expression";
+import { flattenExpressionData } from "@/shared/expression/normalizers/normalize-expression";
+import { pivotableExpressionDataMui } from "@/shared/expression/projections/expression-table-mui";
 import GeneExpressionChart from "@/components/ExpressionChart";
-import { downloadSVG } from "@/shared/expression/utils/download-svg";
+import { downloadSVG } from "@/shared/expression/ui/download-svg";
 
 export function MatrixSection({
   ids,

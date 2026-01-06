@@ -3,20 +3,20 @@
     "id": "PDBJAMAPAORG000001",
     "database": "Phaseolus vulgaris Negro Jamapa",
     "types": {
-      "GENES": {
-        "title": "Phaseolus vulgaris Negro Jamapa - GENES",
-        "metadata": { "path": "pvulgarisnj/pvulgarisnj_meta_GENES_v1.csv" },
+      "genes": {
+        "title": "Phaseolus vulgaris Negro Jamapa - GENES v1",
+        "metadata": "expression/pvulgarisnj/meta/genes",
         "matrices": {
-          "raw": { "path": "pvulgarisnj/pvulgarisnj_raw_GENES_v1.csv" },
-          "scorez": { "path": "pvulgarisnj/pvulgarisnj_scorez_GENES_v1.csv" }
+          "raw": "expression/pvulgarisnj/raw/genes",
+          "scorez": "expression/pvulgarisnj/scorez/genes"
         }
       },
-      "MiRNA": {
-        "title": "Phaseolus vulgaris Negro Jamapa - MiRNAs",
-        "metadata": { "path": "pvulgarisnj/pvulgarisnj_meta_MiRNA_v1.csv" },
+      "mirna": {
+        "title": "Phaseolus vulgaris Negro Jamapa - MiRNAs v1",
+        "metadata": "expression/pvulgarisnj/meta/mirna",
         "matrices": {
-          "raw": { "path": "pvulgarisnj/pvulgarisnj_raw_MiRNA_v1.csv" },
-          "scorez": { "path": "pvulgarisnj/pvulgarisnj_scorez_MiRNA_v1.csv" }
+          "raw": "expression/pvulgarisnj/raw/mirna",
+          "scorez": "expression/pvulgarisnj/scorez/mirna"
         }
       }
     }

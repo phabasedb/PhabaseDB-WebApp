@@ -6,12 +6,12 @@ import { Box, Typography, Chip, CircularProgress } from "@mui/material";
 import MUIDataTable from "mui-datatables";
 
 //local
-import { useMetaData } from "@/components/ApiService/Expression";
+import { useExpressionMeta } from "@/integrations/expression/gene/hooks/useExpressionMeta";
 
 //Name of the columns defined for the table
 const columnsDef = [
   { name: "library", label: "Library" },
-  { name: "organism", label: "Organism" },
+  { name: "information.organism", label: "Organism" },
   { name: "cultivar", label: "Cultivar" },
   { name: "genotype", label: "Genotype" },
   { name: "tissue_organ", label: "Tissue/Organ" },
@@ -42,7 +42,7 @@ const columnsDef = [
 ];
 
 export function MetadataSection({ selected, onSelectCols }) {
-  const { data, error, loading } = useMetaData(selected?.metadata?.path || "");
+  const { data, error, loading } = useExpressionMeta(selected?.metadata || "");
   const [selectedCols, setSelectedCols] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);

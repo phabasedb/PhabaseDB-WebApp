@@ -1,6 +1,12 @@
-export const USER_ERROR_MESSAGE =
+/**
+ * Generic user-facing error shown when JBrowse cannot be loaded.
+ */
+export const USER_ERROR_JBROWSE_MESSAGE =
   "Genome browser is currently unavailable for this gene.";
 
+/**
+ * Runtime validation rules for JBrowse configuration.
+ */
 export const VALID_COORDS_JBROWSE = {
   chromosome: [
     {

@@ -10,7 +10,7 @@ import InfoIcon from "@mui/icons-material/Info";
 import MUIDataTable from "mui-datatables";
 
 // local
-import { useGeneSearch } from "@/components/WebService/gene";
+import { useGeneSearch } from "@/integrations/graphql/gene";
 import DataHandler from "./utils/data-handler";
 
 export default function StructTable({ term }) {

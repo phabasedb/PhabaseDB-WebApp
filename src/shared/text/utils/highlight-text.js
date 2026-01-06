@@ -1,9 +1,10 @@
 /**
- * @param {string} text Full text.
- * @param {string[]} words Words or phrases to highlight.
- * @param {("em"|"strong"|"mark")} tag HTML tag wrapper.
- * @returns {(string|React.ReactNode)[]}
+ * Highlights matching words or phrases inside a text string.
+ *
+ * Splits the text and wraps matched segments with the provided
+ * HTML tag (e.g. em, strong, mark).
  */
+
 function highlightText(text, words, tag = "em") {
   if (!words?.length) return [text];
 

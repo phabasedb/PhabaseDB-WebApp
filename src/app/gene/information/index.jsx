@@ -13,6 +13,9 @@ export default function Information({
   transcripts,
   selectedTranscriptId,
   onSelectTranscript,
+  onNavClick,
+  onBlastClick,
+  showExpression,
 }) {
   return (
     <Box
@@ -30,6 +33,9 @@ export default function Information({
         transcripts={transcripts}
         selectedTranscriptId={selectedTranscriptId}
         onSelectTranscript={onSelectTranscript}
+        onNavClick={onNavClick}
+        onBlastClick={onBlastClick}
+        showExpression={showExpression}
       />
     </Box>
   );

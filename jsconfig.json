@@ -3,6 +3,7 @@
     "baseUrl": "src",
     "paths": {
       "@/components/*": ["components/*"],
+      "@/integrations/*": ["integrations/*"],
       "@/static/*": ["static/*"],
       "@/shared/*": ["shared/*"]
     }

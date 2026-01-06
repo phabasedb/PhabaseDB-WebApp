@@ -19,17 +19,21 @@ import Image from "next/image";
 import { Menu as MenuIcon } from "@mui/icons-material";
 import Link from "next/link";
 
-// local
-
+/**
+ * Definition of pages and routes
+ */
 const pages = [
   { name: "Home", path: "/" },
-  { name: "Expression Atlas", path: "/expression" },
+  /*{ name: "Expression Atlas", path: "/expression" },*/
   { name: "Genome Browser", path: "/jbrowse" },
   { name: "BLAST", path: "/blast" },
-  /*{ name: "Help", path: "/" },*/
+  /*{ name: "Download", path: "/download" },*/
   { name: "About Us", path: "/about" },
 ];
 
+/**
+ * Application navigation bar.
+ */
 export default function NavBar() {
   const [anchorElNav, setAnchorElNav] = useState(null);
 

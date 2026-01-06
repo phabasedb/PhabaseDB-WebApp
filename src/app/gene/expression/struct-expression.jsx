@@ -1,97 +1,107 @@
 "use client";
 
-//standard
-import { useEffect, useRef, useMemo } from "react";
+//standar
+import { useRef, useMemo, useEffect } from "react";
 
-//third party
-import { Box, Typography, Button, CircularProgress } from "@mui/material";
-import DownloadIcon from "@mui/icons-material/Download";
-import MUIDataTable from "mui-datatables";
+// third party
+import { CircularProgress, Box } from "@mui/material";
 
 //local
-import { datasets } from "@/static/expression/datasets";
-import { useGeneMatrix } from "@/components/ApiService/Expression";
-import { flattenExpressionData } from "@/shared/expression/utils/flatten-expression";
-import { pivotableExpressionDataMui } from "@/shared/expression/utils/pivotablemui-expression";
-import GeneExpressionChart from "@/components/ExpressionChart";
-import useBreakpointWidthExpChart from "@/shared/expression/utils/breakpoints-widthChart";
-import useContainerWidth from "@/shared/expression/utils/container-width";
-import ErrorBoxPageGene from "../shared/components/ErrorBox";
-import { downloadSVG } from "@/shared/expression/utils/download-svg";
+import { useExpressionEndpoint } from "./hooks/use-expression-endpoint";
+import { useExpressionDownload } from "./hooks/use-expression-download";
+import { useExpressionByGeneId } from "@/integrations/expression/gene";
+
+import { normalizeExpressionData } from "@/shared/expression/normalizers/normalize-expression";
+import { projectExpressionToD3Series } from "@/shared/expression/projections/expression-series-d3";
+import { projectExpressionToMuiTable } from "@/shared/expression/projections/expression-table-mui";
+
+import useContainerWidth from "@/shared/expression/ui/container-width";
+import useBreakpointWidth from "@/shared/expression/ui/breakpoints-width";
+
+import ExpressionHeader from "./components/ExpressionHeader";
+import ExpressionChartContainer from "./components/ExpressionChartContainer";
+import ExpressionTableMui from "./components/ExpressionTableMui";
+import ErrorBox from "../shared/components/ErrorBox";
+
+import { USER_ERROR_GENE_EXPRESSION_MESSAGE } from "./constants/messages";
 
 export default function StructExpression({ gene, organism }) {
   const svgRef = useRef(null);
 
-  const ds = datasets.find((d) => d.id === organism?.id);
-  if (!ds) {
-    return (
-      <ErrorBoxPageGene text="The gene expression viewer could not be loaded. No genomic data is currently available for the selected organism. Please try again later or contact an administrator." />
-    );
+  /* Endpoint resolution */
+  const { endpoint, error: endpointError } = useExpressionEndpoint(
+    gene,
+    organism
+  );
+
+  if (!endpoint) {
+    console.error("Gene Expression:", endpointError);
+    return <ErrorBox text={USER_ERROR_GENE_EXPRESSION_MESSAGE} />;
   }
 
+  /* Data fetching */
+  const { data, loading, error } = useExpressionByGeneId(
+    endpoint,
+    gene?.accessionId
+  );
+
+  const { data: normalized, error: normalizeError } = useMemo(
+    () => normalizeExpressionData(data),
+    [data]
+  );
+
+  const chartSeries = useMemo(
+    () => projectExpressionToD3Series(normalized),
+    [normalized]
+  );
+
+  const { columns: tableColumns, data: tableRows } = useMemo(
+    () => projectExpressionToMuiTable(normalized),
+    [normalized]
+  );
+
+  /* Button download */
+  const { onDownload } = useExpressionDownload(svgRef, gene);
+
+  /* Layout measurement */
   const {
     ref: containerRef,
     width: containerWidth,
     measure,
   } = useContainerWidth();
-  const fallbackWidth = useBreakpointWidthExpChart();
 
-  const { data, loading, error } = useGeneMatrix(
-    gene?.accessionId,
-    ds?.types?.GENES?.matrices?.scorez?.path || ""
-  );
+  const fallbackWidth = useBreakpointWidth();
 
-  const { data: flatData, error: flattenError } = useMemo(
-    () => flattenExpressionData(data),
-    [data]
-  );
-
-  const {
-    columns: columns_mui,
-    data: rows_mui,
-    error: pivotableError,
-  } = useMemo(
-    () => pivotableExpressionDataMui(flatData, { includeGeneId: false }),
-    [flatData]
-  );
-
-  // Hook para forzar medición tras cargar flatData
   useEffect(() => {
-    if (flatData && flatData.length > 0) {
+    if (normalized && normalized.length > 0) {
       measure();
     }
-  }, [flatData, measure]);
+  }, [normalized, measure]);
 
+  const chartWidth =
+    containerWidth && containerWidth > 0 ? containerWidth : fallbackWidth;
+
+  /* States */
   if (loading) {
-    return (
-      <Box sx={{ textAlign: "center", my: 1 }}>
-        <CircularProgress />
-      </Box>
-    );
+    return <CircularProgress />;
   }
+
   if (error) {
-    return <ErrorBoxPageGene text={error} />;
-  }
-  if (flattenError) {
-    return <ErrorBoxPageGene text={flattenError} />;
-  }
-  if (pivotableError) {
-    return <ErrorBoxPageGene text={pivotableError} />;
+    console.error("Gene Expression:", error);
+    return <ErrorBox text={USER_ERROR_GENE_EXPRESSION_MESSAGE} />;
   }
 
-  const chartWidth = containerWidth > 0 ? containerWidth : fallbackWidth;
+  if (normalizeError) {
+    console.error("Gene Expression:", normalizeError);
+    return <ErrorBox text={USER_ERROR_GENE_EXPRESSION_MESSAGE} />;
+  }
 
-  const handleDownload = () => {
-    const name = gene?.accessionId || "chart";
-    downloadSVG(svgRef.current, `${name}.svg`);
-  };
-
+  /* Render */
   return (
     <Box
       ref={containerRef}
       sx={{
         width: "90%",
-        maxWidth: "100%",
         background: "white",
         display: "flex",
         flexDirection: "column",
@@ -99,110 +109,24 @@ export default function StructExpression({ gene, organism }) {
         overflow: "hidden",
         borderRadius: 2,
         boxShadow: 5,
-        pt: 2,
-        pb: 1,
         gap: 1,
+        pt: 2,
       }}
     >
-      {/* Header */}
-      <Box
-        sx={{
-          width: "100%",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
-        <Box
-          sx={{
-            width: "90%",
-            display: "grid",
-            gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" },
-            alignItems: "center",
-            gap: { xs: 1, md: 0 },
-          }}
-        >
-          <Box sx={{ textAlign: "left" }}>
-            <Typography
-              variant="h4"
-              sx={{
-                fontSize: {
-                  xs: "1.2rem",
-                  sm: "1.4rem",
-                  md: "1.8rem",
-                  lg: "2.0rem",
-                  xl: "2.4rem",
-                },
-                fontWeight: 500,
-              }}
-            >
-              Gene Expression
-            </Typography>
-          </Box>
-          <Box
-            sx={{
-              textAlign: "right",
-              mt: { xs: 2, md: 0 },
-            }}
-          >
-            <Button
-              variant="contained"
-              startIcon={<DownloadIcon />}
-              onClick={handleDownload}
-            >
-              Download
-            </Button>
-          </Box>
-        </Box>
-      </Box>
+      <ExpressionHeader onDownload={onDownload} />
 
-      {/* Chart container */}
-      <Box
-        sx={{
-          width: "100%",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
-        <Box
-          sx={{
-            width: chartWidth,
-            overflowX: "auto",
-            overflowY: "hidden",
-          }}
-        >
-          <GeneExpressionChart
-            data={flatData}
-            columnWidth={20}
-            graphType="scorez"
-            svgRef={svgRef}
-          />
-        </Box>
-      </Box>
+      <ExpressionChartContainer
+        series={chartSeries}
+        svgRef={svgRef}
+        width={chartWidth}
+      />
 
-      {/* Data Table */}
-      <Box
-        sx={{
-          width: chartWidth,
-        }}
-      >
-        <MUIDataTable
-          title={`Gene Expression Table for ${gene?.accessionId}`}
-          data={rows_mui}
-          columns={columns_mui}
-          options={{
-            responsive: "standard",
-            tableBodyWidth: "100%",
-            selectableRows: "none",
-            filter: true,
-            viewColumns: true,
-            pagination: false,
-            print: false,
-            fixedHeader: false,
-          }}
-        />
-      </Box>
+      <ExpressionTableMui
+        columns={tableColumns}
+        data={tableRows}
+        gene={gene}
+        width={chartWidth}
+      />
     </Box>
   );
 }

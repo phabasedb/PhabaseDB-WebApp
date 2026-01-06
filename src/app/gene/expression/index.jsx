@@ -1,5 +1,3 @@
-// standard
-
 // third party
 import { Box } from "@mui/material";
 

@@ -1,5 +1,12 @@
 "use client";
 
+/**
+ * Gene search input component.
+ *
+ * Handles user input validation, search history persistence,
+ * and navigation to gene search results.
+ */
+
 // standard
 import { useState } from "react";
 import { useRouter } from "next/navigation";

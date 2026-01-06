@@ -22,8 +22,8 @@ import {
 import { datasets } from "@/static/expression/datasets";
 import { MetadataSection } from "./metadata-section";
 import { MatrixSection } from "./matrix-section";
-import useBreakpointWidthExpChart from "@/shared/expression/utils/breakpoints-widthChart";
-import useContainerWidth from "@/shared/expression/utils/container-width";
+import useBreakpointWidth from "@/shared/expression/ui/breakpoints-width";
+import useContainerWidth from "@/shared/expression/ui/container-width";
 
 export default function GeneExpressionPage() {
   // Estados principales
@@ -61,7 +61,7 @@ export default function GeneExpressionPage() {
     width: wMatrix,
     measure: mMatrix,
   } = useContainerWidth();
-  const fallbackWidth = useBreakpointWidthExpChart();
+  const fallbackWidth = useBreakpointWidth();
   const chartWidthMeta = wMeta > 0 ? wMeta : fallbackWidth;
   const chartWidthMatrix = wMatrix > 0 ? wMatrix : fallbackWidth;
 
@@ -100,8 +100,8 @@ export default function GeneExpressionPage() {
 
     const path =
       graphType === "raw"
-        ? selectedType.matrices.raw.path
-        : selectedType.matrices.scorez.path;
+        ? selectedType.matrices.raw
+        : selectedType.matrices.scorez;
 
     setMatrixPath(path);
     setTriggerMatrix(true);

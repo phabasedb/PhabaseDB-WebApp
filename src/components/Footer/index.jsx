@@ -1,11 +1,10 @@
-//standard
-
 //third party
 import { Box, Typography } from "@mui/material";
 import Image from "next/image";
 
-//local
-
+/**
+ * Application footer.
+ */
 export default function Footer() {
   return (
     <Box
