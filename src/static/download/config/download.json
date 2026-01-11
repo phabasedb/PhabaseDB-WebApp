@@ -8,6 +8,7 @@
         "key": "annotations",
         "label": "Phaseolus vulgaris cv. Negro Jamapa v1 Annotations",
         "type": "GFF3",
+        "compression": "gz",
         "filename": "pvulgarisnj_annotations_v1.gff3.gz",
         "sizeKB": 6072
       },
@@ -15,6 +16,7 @@
         "key": "genome",
         "label": "Phaseolus vulgaris cv. Negro Jamapa v1 Genome",
         "type": "FASTA",
+        "compression": "gz",
         "filename": "pvulgarisnj_genome_v1.fa.gz",
         "sizeKB": 136045
       },
@@ -22,8 +24,88 @@
         "key": "transcripts",
         "label": "Phaseolus vulgaris cv. Negro Jamapa v1 Transcripts",
         "type": "FASTA",
+        "compression": "gz",
         "filename": "pvulgarisnj_transcripts_v1.fa.gz",
-        "sizeKB": 312400
+        "sizeKB": 10012
+      },
+      {
+        "key": "cds",
+        "label": "Phaseolus vulgaris cv. Negro Jamapa v1 CDS",
+        "type": "FASTA",
+        "compression": "gz",
+        "filename": "pvulgarisnj_cds_v1.fa.gz",
+        "sizeKB": 9861
+      },
+      {
+        "key": "proteins",
+        "label": "Phaseolus vulgaris cv. Negro Jamapa v1 Proteins",
+        "type": "FASTA",
+        "compression": "gz",
+        "filename": "pvulgarisnj_proteins_v1.fa.gz",
+        "sizeKB": 5698
+      },
+      {
+        "key": "expression_gene",
+        "label": "Phaseolus vulgaris cv. Negro Jamapa v1 - Expression GENES",
+        "type": "CSV",
+        "compression": "zip",
+        "filename": "pvulgarisnj_expression_genes_v1.zip",
+        "sizeKB": 26082
+      },
+      {
+        "key": "expression_mirna",
+        "label": "Phaseolus vulgaris cv. Negro Jamapa v1 - Expression MIRNA",
+        "type": "CSV",
+        "compression": "zip",
+        "filename": "pvulgarisnj_expression_mirna_v1.zip",
+        "sizeKB": 70
+      }
+    ]
+  },
+  {
+    "id": "G19833",
+    "organism": "Phaseolus vulgaris cv. G19833",
+    "slug": "g19833",
+    "files": [
+      {
+        "key": "annotations",
+        "label": "Phaseolus vulgaris cv. G19833 v2.1 Annotations",
+        "type": "GFF3",
+        "compression": "gz",
+        "filename": "g19833_annotations_v2.1.gff3.gz",
+        "sizeKB": 4451
+      },
+      {
+        "key": "genome",
+        "label": "Phaseolus vulgaris cv. G19833 v2.1 Genome",
+        "type": "FASTA",
+        "compression": "gz",
+        "filename": "g19833_genome_v2.1.fa.gz",
+        "sizeKB": 138251
+      },
+      {
+        "key": "transcripts",
+        "label": "Phaseolus vulgaris cv. G19833 v2.1 Transcripts",
+        "type": "FASTA",
+        "compression": "gz",
+        "filename": "g19833_transcripts_v2.1.fa.gz",
+        "sizeKB": 15986
+      },
+      {
+        "key": "cds",
+        "label": "Phaseolus vulgaris cv. G19833 v2.1 CDS",
+        "type": "FASTA",
+        "compression": "gz",
+        "filename": "g19833_cds_v2.1.fa.gz",
+        "sizeKB": 12157
+      },
+      {
+        "key": "proteins",
+        "label": "Phaseolus vulgaris cv. G19833 v2.1 Proteins",
+        "type": "FASTA",
+        "compression": "gz",
+        "filename": "g19833_proteins_v2.1.fa.gz",
+        "sizeKB": 7309
       }
     ]
   },
@@ -36,22 +118,41 @@
         "key": "annotations",
         "label": "Phaseolus vulgaris cv. BAT93 v10 Annotations",
         "type": "GFF3",
-        "filename": "bat93_annotations_v1.gff3.gz",
-        "sizeKB": 7072
+        "compression": "gz",
+        "filename": "bat93_annotations_v10.gff3.gz",
+        "sizeKB": 9183
       },
       {
         "key": "genome",
         "label": "Phaseolus vulgaris cv. BAT93 v10 Genome",
         "type": "FASTA",
-        "filename": "bat93_genome_v1.fa.gz",
-        "sizeKB": 136045
+        "compression": "gz",
+        "filename": "bat93_genome_v10.fa.gz",
+        "sizeKB": 126717
       },
       {
         "key": "transcripts",
         "label": "Phaseolus vulgaris cv. BAT93 v10 Transcripts",
         "type": "FASTA",
-        "filename": "bat93_transcripts_v1.fa.gz",
-        "sizeKB": 312400
+        "compression": "gz",
+        "filename": "bat93_transcripts_v10.fa.gz",
+        "sizeKB": 24505
+      },
+      {
+        "key": "cds",
+        "label": "Phaseolus vulgaris cv. BAT93 v10 CDS",
+        "type": "FASTA",
+        "compression": "gz",
+        "filename": "bat93_cds_v10.fa.gz",
+        "sizeKB": 14014
+      },
+      {
+        "key": "proteins",
+        "label": "Phaseolus vulgaris cv. BAT93 v10 Proteins",
+        "type": "FASTA",
+        "compression": "gz",
+        "filename": "bat93_proteins_v10.fa.gz",
+        "sizeKB": 7410
       }
     ]
   }

@@ -8,7 +8,7 @@ import { download } from "@/static/download/config";
 import { formatFileSize } from "./utils/formatFileSize";
 import highlightText from "@/shared/text/utils/highlight-text";
 
-const DOWNLOADS_BASE_URL = "http://localhost/downloads"; //production = "/downloads" :
+const DOWNLOADS_BASE_URL = "/downloads"; //production = "/downloads" :
 
 export default function DownloadsPage() {
   return (
@@ -78,6 +78,9 @@ export default function DownloadsPage() {
                 }}
               >
                 {organism.files.map((file) => {
+                  const typeLabel = `${file.type}${
+                    file.compression ? ` (${file.compression})` : ""
+                  }`;
                   return (
                     <Box
                       key={file.filename}
@@ -100,7 +103,7 @@ export default function DownloadsPage() {
                       <Typography>{file.label}</Typography>
 
                       <Chip
-                        label={file.type}
+                        label={typeLabel}
                         size="small"
                         sx={{ width: "fit-content" }}
                       />
