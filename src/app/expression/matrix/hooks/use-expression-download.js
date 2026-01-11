@@ -6,7 +6,7 @@ import { downloadSVG } from "@/shared/expression/ui/download-svg";
 
 const MAX_NODES = 5000;
 
-export function useGeneExpressionDownload(svgRef, gene) {
+export function useExpressionDownload(svgRef) {
   const onDownload = useCallback(() => {
     const svg = svgRef?.current;
     if (!svg) return;
@@ -18,12 +18,10 @@ export function useGeneExpressionDownload(svgRef, gene) {
       return;
     }
 
-    const filename = gene?.accessionId
-      ? `${gene.accessionId}.svg`
-      : "gene-expression.svg";
+    const filename = "gene-expression.svg";
 
     downloadSVG(svg, filename);
-  }, [svgRef, gene]);
+  }, [svgRef]);
 
   return { onDownload };
 }

@@ -21,7 +21,7 @@ export function useExpressionByIds(endpoint, ids = [], columns = []) {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (!ids.length) {
+    if (!endpoint || !ids.length) {
       setData(null);
       setNotFoundIds([]);
       setLoading(false);
@@ -37,7 +37,9 @@ export function useExpressionByIds(endpoint, ids = [], columns = []) {
         setError(null);
         setNotFoundIds([]);
 
-        const response = await postExpressionByIds(endpoint, {
+        const url = `${endpoint.replace(/\/$/, "")}/query`;
+
+        const response = await postExpressionByIds(url, {
           ids,
           columns,
         });
@@ -45,7 +47,9 @@ export function useExpressionByIds(endpoint, ids = [], columns = []) {
         const raw = response?.data ?? [];
 
         if (!Array.isArray(raw) || raw.length === 0) {
-          throw new Error("No expression data found");
+          throw new Error(
+            "No expression data was found in the database for these identifiers."
+          );
         }
 
         if (isMounted) {

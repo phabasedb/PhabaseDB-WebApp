@@ -20,26 +20,27 @@ import {
 
 //local
 import { datasets } from "@/static/expression/datasets";
-import { MetadataSection } from "./metadata-section";
-import { MatrixSection } from "./matrix-section";
-import useBreakpointWidth from "@/shared/expression/ui/breakpoints-width";
+import { MetadataSection } from "./metadata/MetadataSection";
+import { MatrixSection } from "./matrix/MatrixSection";
+
 import useContainerWidth from "@/shared/expression/ui/container-width";
+import useBreakpointWidth from "@/shared/expression/ui/breakpoints-width";
 
 export default function GeneExpressionPage() {
   // Estados principales
   const [selectedType, setSelectedType] = useState(null);
-  const [selectedCols, setSelectedCols] = useState([]);
+  const [selectedLibraries, setSelectedLibraries] = useState([]);
   const [idsText, setIdsText] = useState("");
   const [graphType, setGraphType] = useState("raw");
 
-  // Estados de carga
+  // Estados de carga de metadata
   const [loadedMeta, setLoadedMeta] = useState(false);
   const [triggerMatrix, setTriggerMatrix] = useState(false);
 
-  // Valores fijos para MatrixSection
+  // MatrixSection
   const [matrixIds, setMatrixIds] = useState([]);
   const [matrixColumns, setMatrixColumns] = useState([]);
-  const [matrixPath, setMatrixPath] = useState("");
+  const [matrixEndpoint, setMatrixEndpoint] = useState("");
 
   // Extraer datasets válidos (nueva estructura con types)
   const validTypes = [];
@@ -55,15 +56,9 @@ export default function GeneExpressionPage() {
   });
 
   // Tamaños dinámicos
-  const { ref: refMeta, width: wMeta, measure: mMeta } = useContainerWidth();
-  const {
-    ref: refMatrix,
-    width: wMatrix,
-    measure: mMatrix,
-  } = useContainerWidth();
+  const { ref: refMeta, width: wMeta } = useContainerWidth();
   const fallbackWidth = useBreakpointWidth();
   const chartWidthMeta = wMeta > 0 ? wMeta : fallbackWidth;
-  const chartWidthMatrix = wMatrix > 0 ? wMatrix : fallbackWidth;
 
   // --- Funciones ---
   const handleSelectChange = (e) => {
@@ -80,12 +75,12 @@ export default function GeneExpressionPage() {
   const handleClear = () => {
     setLoadedMeta(false);
     setSelectedType(null);
-    setSelectedCols([]);
+    setSelectedLibraries([]);
     setIdsText("");
     setTriggerMatrix(false);
     setMatrixIds([]);
     setMatrixColumns([]);
-    setMatrixPath("");
+    setMatrixEndpoint("");
   };
 
   // Function to handle "Gene Expression
@@ -96,14 +91,14 @@ export default function GeneExpressionPage() {
       .filter((id) => id !== "");
 
     setMatrixIds(idsList);
-    setMatrixColumns(selectedCols);
+    setMatrixColumns(selectedLibraries);
 
-    const path =
+    const endpoint =
       graphType === "raw"
         ? selectedType.matrices.raw
         : selectedType.matrices.scorez;
 
-    setMatrixPath(path);
+    setMatrixEndpoint(endpoint);
     setTriggerMatrix(true);
   };
 
@@ -211,8 +206,8 @@ export default function GeneExpressionPage() {
           {loadedMeta && selectedType && (
             <Box sx={{ my: 2, width: chartWidthMeta }}>
               <MetadataSection
-                selected={selectedType}
-                onSelectCols={setSelectedCols}
+                endpoint={selectedType.metadata}
+                onSelectLibraries={setSelectedLibraries}
               />
             </Box>
           )}
@@ -266,7 +261,9 @@ export default function GeneExpressionPage() {
             <Button
               variant="contained"
               onClick={handleGeneExpression}
-              disabled={!loadedMeta || !idsText.trim() || !selectedCols.length}
+              disabled={
+                !loadedMeta || !idsText.trim() || !selectedLibraries.length
+              }
             >
               Expression Atlas
             </Button>
@@ -276,28 +273,12 @@ export default function GeneExpressionPage() {
 
       {/* Matrix section */}
       {triggerMatrix && (
-        <Box
-          ref={refMatrix}
-          sx={{
-            width: "90%",
-            backgroundColor: "white",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            overflow: "hidden",
-            borderRadius: 2,
-            boxShadow: 5,
-            pt: 2,
-            pb: 1,
-          }}
-        >
+        <Box sx={{ width: "90%" }}>
           <MatrixSection
+            endpoint={matrixEndpoint}
             ids={matrixIds}
             columns={matrixColumns}
-            matrixPath={matrixPath}
             graphType={graphType}
-            chartWidth={chartWidthMatrix}
-            measure={mMatrix}
           />
         </Box>
       )}

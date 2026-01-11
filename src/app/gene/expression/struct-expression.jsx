@@ -8,7 +8,7 @@ import { CircularProgress, Box } from "@mui/material";
 
 //local
 import { useExpressionEndpoint } from "./hooks/use-expression-endpoint";
-import { useExpressionDownload } from "./hooks/use-expression-download";
+import { useGeneExpressionDownload } from "./hooks/use-expression-download";
 import { useExpressionByGeneId } from "@/integrations/expression/gene";
 
 import { normalizeExpressionData } from "@/shared/expression/normalizers/normalize-expression";
@@ -21,22 +21,22 @@ import useBreakpointWidth from "@/shared/expression/ui/breakpoints-width";
 import ExpressionHeader from "./components/ExpressionHeader";
 import ExpressionChartContainer from "./components/ExpressionChartContainer";
 import ExpressionTableMui from "./components/ExpressionTableMui";
-import ErrorBox from "../shared/components/ErrorBox";
+import { ErrorBoxPageGene } from "../shared/components/ErrorBox";
 
 import { USER_ERROR_GENE_EXPRESSION_MESSAGE } from "./constants/messages";
 
 export default function StructExpression({ gene, organism }) {
   const svgRef = useRef(null);
 
-  /* Endpoint resolution */
+  /* Endpoint */
   const { endpoint, error: endpointError } = useExpressionEndpoint(
     gene,
     organism
   );
 
   if (!endpoint) {
-    console.error("Gene Expression:", endpointError);
-    return <ErrorBox text={USER_ERROR_GENE_EXPRESSION_MESSAGE} />;
+    console.error("Gene Expression endp:", endpointError);
+    return <ErrorBoxPageGene text={USER_ERROR_GENE_EXPRESSION_MESSAGE} />;
   }
 
   /* Data fetching */
@@ -45,23 +45,28 @@ export default function StructExpression({ gene, organism }) {
     gene?.accessionId
   );
 
-  const { data: normalized, error: normalizeError } = useMemo(
-    () => normalizeExpressionData(data),
-    [data]
-  );
+  // Normalized data
+  const { data: normalized, error: normalizeError } = useMemo(() => {
+    if (loading || !data) {
+      return { data: [], error: null };
+    }
+    return normalizeExpressionData(data);
+  }, [data, loading]);
 
+  // Seriesd3 data
   const chartSeries = useMemo(
     () => projectExpressionToD3Series(normalized),
     [normalized]
   );
 
+  // MuiTable data
   const { columns: tableColumns, data: tableRows } = useMemo(
     () => projectExpressionToMuiTable(normalized),
     [normalized]
   );
 
   /* Button download */
-  const { onDownload } = useExpressionDownload(svgRef, gene);
+  const { onDownload } = useGeneExpressionDownload(svgRef, gene);
 
   /* Layout measurement */
   const {
@@ -87,13 +92,13 @@ export default function StructExpression({ gene, organism }) {
   }
 
   if (error) {
-    console.error("Gene Expression:", error);
-    return <ErrorBox text={USER_ERROR_GENE_EXPRESSION_MESSAGE} />;
+    console.error("Gene Expression ftc:", error);
+    return <ErrorBoxPageGene text={USER_ERROR_GENE_EXPRESSION_MESSAGE} />;
   }
 
   if (normalizeError) {
-    console.error("Gene Expression:", normalizeError);
-    return <ErrorBox text={USER_ERROR_GENE_EXPRESSION_MESSAGE} />;
+    console.error("Gene Expression norm:", normalizeError);
+    return <ErrorBoxPageGene text={USER_ERROR_GENE_EXPRESSION_MESSAGE} />;
   }
 
   /* Render */

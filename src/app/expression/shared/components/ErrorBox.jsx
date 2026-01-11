@@ -1,14 +1,10 @@
-//third party
 import { Box, Typography } from "@mui/material";
 
-//local
-
-export function ErrorBoxPageGene({ text }) {
+export function ErrorBoxPageExpressionAtlas({ text }) {
   return (
     <Box
       sx={{
-        width: "90%",
-        background: "white",
+        backgroundColor: "white",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",

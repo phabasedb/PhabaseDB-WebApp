@@ -16,11 +16,13 @@ import { getMeta } from "../request/getMeta";
 import { mapExpressionMeta } from "../mappers/metaMapper";
 
 export function useExpressionMeta(endpoint) {
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    if (!endpoint) return;
+
     let isMounted = true;
 
     async function fetchMeta() {
@@ -32,7 +34,7 @@ export function useExpressionMeta(endpoint) {
         const raw = response?.data ?? [];
 
         if (!Array.isArray(raw) || raw.length === 0) {
-          throw new Error("No metadata found in the database");
+          throw new Error("No metadata found in the database.");
         }
 
         if (isMounted) {

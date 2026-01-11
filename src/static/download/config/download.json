@@ -1,0 +1,58 @@
+[
+  {
+    "id": "PVNJ",
+    "organism": "Phaseolus vulgaris cv. Negro Jamapa",
+    "slug": "pvulgarisnj",
+    "files": [
+      {
+        "key": "annotations",
+        "label": "Phaseolus vulgaris cv. Negro Jamapa v1 Annotations",
+        "type": "GFF3",
+        "filename": "pvulgarisnj_annotations_v1.gff3.gz",
+        "sizeKB": 6072
+      },
+      {
+        "key": "genome",
+        "label": "Phaseolus vulgaris cv. Negro Jamapa v1 Genome",
+        "type": "FASTA",
+        "filename": "pvulgarisnj_genome_v1.fa.gz",
+        "sizeKB": 136045
+      },
+      {
+        "key": "transcripts",
+        "label": "Phaseolus vulgaris cv. Negro Jamapa v1 Transcripts",
+        "type": "FASTA",
+        "filename": "pvulgarisnj_transcripts_v1.fa.gz",
+        "sizeKB": 312400
+      }
+    ]
+  },
+  {
+    "id": "BAT93",
+    "organism": "Phaseolus vulgaris cv. BAT93",
+    "slug": "bat93",
+    "files": [
+      {
+        "key": "annotations",
+        "label": "Phaseolus vulgaris cv. BAT93 v10 Annotations",
+        "type": "GFF3",
+        "filename": "bat93_annotations_v1.gff3.gz",
+        "sizeKB": 7072
+      },
+      {
+        "key": "genome",
+        "label": "Phaseolus vulgaris cv. BAT93 v10 Genome",
+        "type": "FASTA",
+        "filename": "bat93_genome_v1.fa.gz",
+        "sizeKB": 136045
+      },
+      {
+        "key": "transcripts",
+        "label": "Phaseolus vulgaris cv. BAT93 v10 Transcripts",
+        "type": "FASTA",
+        "filename": "bat93_transcripts_v1.fa.gz",
+        "sizeKB": 312400
+      }
+    ]
+  }
+]

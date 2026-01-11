@@ -5,7 +5,7 @@ import DownloadIcon from "@mui/icons-material/Download";
 /**
  * Header Gene Expression
  */
-export default function ExpressionHeader({ onDownload }) {
+export default function MatrixHeader({ onDownload }) {
   return (
     <Box
       sx={{
@@ -36,7 +36,7 @@ export default function ExpressionHeader({ onDownload }) {
             fontWeight: 500,
           }}
         >
-          Gene Expression (Z-Score)
+          Expression Atlas
         </Typography>
 
         <Box sx={{ textAlign: "right" }}>

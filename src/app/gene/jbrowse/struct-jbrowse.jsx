@@ -9,7 +9,7 @@ import { Box } from "@mui/material";
 // local
 import { datasets } from "@/static/jbrowse/datasets";
 import { buildJBrowseUrlFromCoords } from "@/shared/jbrowse/build-url-from-coords";
-import ErrorBox from "../shared/components/ErrorBox";
+import { ErrorBoxPageGene } from "../shared/components/ErrorBox";
 import { USER_ERROR_JBROWSE_MESSAGE } from "@/shared/jbrowse/validation";
 
 export default function StructJBrowse({ gene, organism, chromosome }) {
@@ -53,7 +53,7 @@ export default function StructJBrowse({ gene, organism, chromosome }) {
       console.error("JBrowse:", internalMessage);
     }
 
-    return <ErrorBox text={USER_ERROR_JBROWSE_MESSAGE} />;
+    return <ErrorBoxPageGene text={USER_ERROR_JBROWSE_MESSAGE} />;
   }
 
   return (

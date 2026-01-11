@@ -24,10 +24,10 @@ import Link from "next/link";
  */
 const pages = [
   { name: "Home", path: "/" },
-  /*{ name: "Expression Atlas", path: "/expression" },*/
+  { name: "Expression Atlas", path: "/expression" },
   { name: "Genome Browser", path: "/jbrowse" },
   { name: "BLAST", path: "/blast" },
-  /*{ name: "Download", path: "/download" },*/
+  { name: "Downloads", path: "/download" },
   { name: "About Us", path: "/about" },
 ];
 

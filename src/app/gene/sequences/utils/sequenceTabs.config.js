@@ -29,7 +29,7 @@ ${wrapSequence(gene.sequence)}`;
     },
   },
 
-  {
+  /*{
     value: "transcript",
     label: (len) => `Transcript [${len}]`,
     requiresTranscript: true,
@@ -50,7 +50,7 @@ ${wrapSequence(gene.sequence)}`;
       }..${selectedTranscript.end} ${selectedTranscript.strand}
 ${wrapSequence(selectedTranscript.sequence)}`;
     },
-  },
+  },*/
 
   {
     value: "cds",

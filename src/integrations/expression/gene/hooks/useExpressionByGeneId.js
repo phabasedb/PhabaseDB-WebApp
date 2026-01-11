@@ -17,10 +17,12 @@ import { mapExpressionByGeneId } from "../mappers/expressionByGeneIdMapper";
 
 export function useExpressionByGeneId(endpoint, geneId) {
   const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    if (!endpoint && !geneId) return;
+
     let isMounted = true;
 
     async function fetchExpression() {
@@ -32,7 +34,7 @@ export function useExpressionByGeneId(endpoint, geneId) {
         const rawArray = response?.data ?? [];
 
         if (!Array.isArray(rawArray) || rawArray.length === 0) {
-          throw new Error("No expression data found for this gene");
+          throw new Error("No expression data found for this gene.");
         }
 
         const geneObject = rawArray[0];
