@@ -7,7 +7,7 @@ import { Box, List, ListItem, ListItemText, Typography } from "@mui/material";
 import { datasets } from "@/static/jbrowse/datasets";
 import { buildJBrowseUrlFromSession } from "@/shared/jbrowse/build-url-from-session";
 
-export default function JBrowsePage() {
+export default function GenomeBrowserPage() {
   const validDatasets = datasets.filter(
     ({ id, organism, sessionDefault }) =>
       id && organism && sessionDefault?.views?.length > 0
