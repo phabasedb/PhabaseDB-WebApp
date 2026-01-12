@@ -45,7 +45,7 @@ import { createTooltip } from "./tooltip";
 
 export default function ExpressionChart({
   series,
-  columnWidth = 100,
+  columnWidth = 20,
   graphType = "scorez",
   svgRef,
 }) {

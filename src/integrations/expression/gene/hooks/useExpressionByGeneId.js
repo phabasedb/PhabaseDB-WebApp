@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 // local
 import { getExpressionByGeneId } from "../request/getExpressionByGeneId";
 import { mapExpressionByGeneId } from "../mappers/expressionByGeneIdMapper";
+import { FRIENDLY_MESSAGES } from "../../constants/friendlyMessages";
 
 export function useExpressionByGeneId(endpoint, geneId) {
   const [data, setData] = useState(null);
@@ -31,17 +32,25 @@ export function useExpressionByGeneId(endpoint, geneId) {
         setError(null);
 
         const response = await getExpressionByGeneId(endpoint, geneId);
-        const rawArray = response?.data ?? [];
+        const { status, code, data: rawArray } = response;
 
-        if (!Array.isArray(rawArray) || rawArray.length === 0) {
-          throw new Error("No expression data found for this gene.");
+        if (status === "error") {
+          throw new Error(
+            FRIENDLY_MESSAGES[code] ?? "An unexpected error occurred."
+          );
+        }
+
+        if (
+          status === "success" &&
+          (!Array.isArray(rawArray) || rawArray.length === 0)
+        ) {
+          throw new Error(
+            FRIENDLY_MESSAGES[code] ?? "No expression data were found."
+          );
         }
 
         const geneObject = rawArray[0];
-
-        if (isMounted) {
-          setData(mapExpressionByGeneId(geneObject));
-        }
+        if (isMounted) setData(mapExpressionByGeneId(geneObject));
       } catch (err) {
         if (isMounted) {
           setError(err.message);

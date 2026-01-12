@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 // local
 import { postExpressionByIds } from "../request/postExpressionByIds";
 import { mapExpressionByIds } from "../mappers/expressionByIdsMapper";
+import { FRIENDLY_MESSAGES } from "../../constants/friendlyMessages";
 
 export function useExpressionByIds(endpoint, ids = [], columns = []) {
   const [data, setData] = useState(null);
@@ -21,13 +22,7 @@ export function useExpressionByIds(endpoint, ids = [], columns = []) {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (!endpoint || !ids.length) {
-      setData(null);
-      setNotFoundIds([]);
-      setLoading(false);
-      setError(null);
-      return;
-    }
+    if (!endpoint || !ids.length || !columns.length) return;
 
     let isMounted = true;
 
@@ -39,21 +34,26 @@ export function useExpressionByIds(endpoint, ids = [], columns = []) {
 
         const url = `${endpoint.replace(/\/$/, "")}/query`;
 
-        const response = await postExpressionByIds(url, {
-          ids,
-          columns,
-        });
+        const response = await postExpressionByIds(url, { ids, columns });
+        const { status, code, data: rawArray } = response;
 
-        const raw = response?.data ?? [];
-
-        if (!Array.isArray(raw) || raw.length === 0) {
+        if (status === "error") {
           throw new Error(
-            "No expression data was found in the database for these identifiers."
+            FRIENDLY_MESSAGES[code] ?? "An unexpected error occurred."
+          );
+        }
+
+        if (
+          status === "success" &&
+          (!Array.isArray(rawArray) || rawArray.length === 0)
+        ) {
+          throw new Error(
+            FRIENDLY_MESSAGES[code] ?? FRIENDLY_MESSAGES.MULTI_EXPR_NOT_FOUND
           );
         }
 
         if (isMounted) {
-          setData(mapExpressionByIds(raw));
+          setData(mapExpressionByIds(rawArray));
           setNotFoundIds(response?.not_found_ids ?? []);
         }
       } catch (err) {

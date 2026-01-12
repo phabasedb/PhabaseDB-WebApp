@@ -1,9 +1,10 @@
 import { Box, Typography } from "@mui/material";
 
-export function ErrorBoxPageExpressionAtlas({ text }) {
+export function PageStateMessage({ text }) {
   return (
     <Box
       sx={{
+        width: "90%",
         backgroundColor: "white",
         display: "flex",
         flexDirection: "column",

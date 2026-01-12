@@ -2,17 +2,12 @@
 import { Box } from "@mui/material";
 import MUIDataTable from "mui-datatables";
 
-/**
- * Presentational table for gene expression values.
- * Layout width is controlled by the parent container.
- */
-export default function ExpressionTableMui({ columns, data, gene, width }) {
-  if (!columns || columns.length === 0) return null;
-
+/**Representative dates in table */
+export default function ExpressionDataTable({ title, columns, data, width }) {
   return (
     <Box sx={{ width }}>
       <MUIDataTable
-        title={`Gene Expression Table for ${gene?.accessionId}`}
+        title={title}
         data={data}
         columns={columns}
         options={{

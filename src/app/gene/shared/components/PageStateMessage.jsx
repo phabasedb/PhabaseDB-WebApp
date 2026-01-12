@@ -3,7 +3,7 @@ import { Box, Typography } from "@mui/material";
 
 //local
 
-export function ErrorBoxPageGene({ text }) {
+export function PageStateMessage({ text }) {
   return (
     <Box
       sx={{

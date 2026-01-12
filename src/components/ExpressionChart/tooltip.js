@@ -18,7 +18,13 @@ import * as d3 from "d3";
 
 export function createTooltip(containerRef) {
   // Create tooltip only if container exists
-  if (!containerRef.current) return { show: () => {}, hide: () => {} };
+  if (!containerRef.current) {
+    return {
+      show: () => {},
+      hide: () => {},
+      remove: () => {},
+    };
+  }
 
   const tooltip = d3
     .select(containerRef.current)

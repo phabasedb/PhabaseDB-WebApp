@@ -8,7 +8,12 @@
  */
 
 // third party
-import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+import {
+  ApolloClient,
+  InMemoryCache,
+  ApolloProvider,
+  HttpLink,
+} from "@apollo/client";
 
 let globalClient;
 
@@ -17,7 +22,7 @@ let globalClient;
  */
 function makeClient() {
   return new ApolloClient({
-    uri: process.env.NEXT_PUBLIC_URI_GRAPHQL,
+    link: new HttpLink({ uri: process.env.NEXT_PUBLIC_URI_GRAPHQL }),
     cache: new InMemoryCache({
       typePolicies: {
         GeneInfo: { keyFields: ["accessionId"] },

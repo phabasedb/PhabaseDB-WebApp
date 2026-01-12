@@ -14,7 +14,7 @@
  * }>
  */
 
-export function normalizeExpressionData(input) {
+/*export function normalizeExpressionData(input) {
   if (!input) {
     return { data: [], error: "No expression data available." };
   }
@@ -40,4 +40,21 @@ export function normalizeExpressionData(input) {
   }
 
   return { data, error: null };
+}*/
+
+export function normalizeExpressionData(input) {
+  if (!input) return [];
+
+  const genes = Array.isArray(input) ? input : [input];
+
+  return genes.flatMap((gene) =>
+    (gene.transcripts || []).flatMap((tx) =>
+      (tx.expression || []).map((ex) => ({
+        geneId: gene.geneId || "",
+        transcriptId: tx.transcriptId || "",
+        condition: ex.condition || "",
+        value: ex.value ?? 0,
+      }))
+    )
+  );
 }

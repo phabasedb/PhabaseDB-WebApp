@@ -5,18 +5,18 @@
     "types": {
       "genes": {
         "title": "Phaseolus vulgaris Negro Jamapa - GENES v1",
-        "metadata": "expression/pvulgarisnj/meta/genes",
+        "metadata": "/pvulgarisnj/meta/genes",
         "matrices": {
-          "raw": "expression/pvulgarisnj/raw/genes",
-          "scorez": "expression/pvulgarisnj/scorez/genes"
+          "raw": "/pvulgarisnj/raw/genes",
+          "scorez": "/pvulgarisnj/scorez/genes"
         }
       },
       "mirna": {
         "title": "Phaseolus vulgaris Negro Jamapa - MiRNAs v1",
-        "metadata": "expression/pvulgarisnj/meta/mirna",
+        "metadata": "/pvulgarisnj/meta/mirna",
         "matrices": {
-          "raw": "expression/pvulgarisnj/raw/mirna",
-          "scorez": "expression/pvulgarisnj/scorez/mirna"
+          "raw": "/pvulgarisnj/raw/mirna",
+          "scorez": "/pvulgarisnj/scorez/mirna"
         }
       }
     }

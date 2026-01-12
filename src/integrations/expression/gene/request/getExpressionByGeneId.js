@@ -18,17 +18,15 @@ export async function getExpressionByGeneId(endpoint, geneId) {
     });
 
     const json = await res.json();
-
-    if (!res.ok) {
-      throw new Error(json?.message || "Failed to fetch gene expression");
-    }
-
     return json;
   } catch (err) {
     if (err.name === "AbortError") {
       throw new Error("Request timeout. Please try again later.");
     }
-    throw err;
+
+    throw new Error(
+      "Failed to fetch in Expression API. Please try again later."
+    );
   } finally {
     clearTimeout(timeoutId);
   }

@@ -81,7 +81,8 @@ export function drawHeatmap({
   // Draw heatmap cells
   heatG
     .selectAll("rect.cell")
-    .data(heatData)
+    //.data(heatData)
+    .data(heatData, (d) => `${d.transcriptId}::${d.condition}`)
     .join("rect")
     .attr("class", "cell")
     .attr("x", (d) => xHeat(d.condition))

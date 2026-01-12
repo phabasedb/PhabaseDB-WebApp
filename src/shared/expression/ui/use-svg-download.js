@@ -2,11 +2,17 @@
 import { useCallback } from "react";
 
 // local
-import { downloadSVG } from "@/shared/expression/ui/download-svg";
+import { downloadSVG } from "./download-svg";
 
 const MAX_NODES = 5000;
 
-export function useGeneExpressionDownload(svgRef, gene) {
+/**
+ * Generic SVG download hook for expression charts.
+ *
+ * @param {React.RefObject<SVGSVGElement>} svgRef
+ * @param {() => string} getFilename
+ */
+export function useSvgDownload(svgRef, getFilename) {
   const onDownload = useCallback(() => {
     const svg = svgRef?.current;
     if (!svg) return;
@@ -18,12 +24,13 @@ export function useGeneExpressionDownload(svgRef, gene) {
       return;
     }
 
-    const filename = gene?.accessionId
-      ? `${gene.accessionId}.svg`
-      : "gene-expression.svg";
+    const filename =
+      typeof getFilename === "function"
+        ? getFilename()
+        : "expression-chart.svg";
 
     downloadSVG(svg, filename);
-  }, [svgRef, gene]);
+  }, [svgRef, getFilename]);
 
   return { onDownload };
 }

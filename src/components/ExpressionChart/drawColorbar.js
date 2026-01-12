@@ -31,15 +31,27 @@ export function drawColorBar({ svg, layout, scales, graphType }) {
     );
 
   // Gradient definition
-  const defs = svg.append("defs");
-
-  const gradient = defs
+  //const defs = svg.append("defs");
+  /*const gradient = defs
     .append("linearGradient")
     .attr("id", "expression-gradient")
     .attr("x1", "0%")
     .attr("y1", "0%")
     .attr("x2", "100%")
+    .attr("y2", "0%");*/
+  const defs = svg.selectAll("defs").data([null]).join("defs");
+
+  const gradient = defs
+    .selectAll("#expression-gradient")
+    .data([null])
+    .join("linearGradient")
+    .attr("id", "expression-gradient")
+    .attr("x1", "0%")
+    .attr("y1", "0%")
+    .attr("x2", "100%")
     .attr("y2", "0%");
+
+  gradient.selectAll("stop").remove();
 
   d3.range(0, 1.01, 0.25).forEach((t) => {
     gradient

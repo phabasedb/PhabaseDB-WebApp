@@ -3,9 +3,9 @@ import { Box, Typography, Button } from "@mui/material";
 import DownloadIcon from "@mui/icons-material/Download";
 
 /**
- * Header Gene Expression
+ * Header Download Section
  */
-export default function ExpressionHeader({ onDownload }) {
+export default function DownloadSectionHeader({ title, onDownload }) {
   return (
     <Box
       sx={{
@@ -36,7 +36,7 @@ export default function ExpressionHeader({ onDownload }) {
             fontWeight: 500,
           }}
         >
-          Gene Expression (Z-Score)
+          {title}
         </Typography>
 
         <Box sx={{ textAlign: "right" }}>

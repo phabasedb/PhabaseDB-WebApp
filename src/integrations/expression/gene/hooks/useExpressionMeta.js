@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 // local
 import { getMeta } from "../request/getMeta";
 import { mapExpressionMeta } from "../mappers/metaMapper";
+import { FRIENDLY_MESSAGES } from "../../constants/friendlyMessages";
 
 export function useExpressionMeta(endpoint) {
   const [data, setData] = useState([]);
@@ -31,14 +32,25 @@ export function useExpressionMeta(endpoint) {
         setError(null);
 
         const response = await getMeta(endpoint);
-        const raw = response?.data ?? [];
+        const { status, code, data: rawArray } = response;
 
-        if (!Array.isArray(raw) || raw.length === 0) {
-          throw new Error("No metadata found in the database.");
+        if (status === "error") {
+          throw new Error(
+            FRIENDLY_MESSAGES[code] ?? "An unexpected error occurred."
+          );
+        }
+
+        if (
+          status === "success" &&
+          (!Array.isArray(rawArray) || rawArray.length === 0)
+        ) {
+          throw new Error(
+            FRIENDLY_MESSAGES[code] ?? "No expression metadata were found."
+          );
         }
 
         if (isMounted) {
-          setData(mapExpressionMeta(raw));
+          setData(mapExpressionMeta(rawArray));
         }
       } catch (err) {
         if (isMounted) {

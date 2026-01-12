@@ -8,22 +8,23 @@ import { CircularProgress, Box } from "@mui/material";
 
 //local
 import { useExpressionEndpoint } from "./hooks/use-expression-endpoint";
-import { useGeneExpressionDownload } from "./hooks/use-expression-download";
 import { useExpressionByGeneId } from "@/integrations/expression/gene";
 
 import { normalizeExpressionData } from "@/shared/expression/normalizers/normalize-expression";
 import { projectExpressionToD3Series } from "@/shared/expression/projections/expression-series-d3";
 import { projectExpressionToMuiTable } from "@/shared/expression/projections/expression-table-mui";
 
+import { PageStateMessage } from "../shared/components/PageStateMessage";
+import { EXPRESSION_EMPTY_AFTER_NORMALIZATION } from "@/shared/expression/constants/statesMessages";
+
 import useContainerWidth from "@/shared/expression/ui/container-width";
 import useBreakpointWidth from "@/shared/expression/ui/breakpoints-width";
 
-import ExpressionHeader from "./components/ExpressionHeader";
-import ExpressionChartContainer from "./components/ExpressionChartContainer";
-import ExpressionTableMui from "./components/ExpressionTableMui";
-import { ErrorBoxPageGene } from "../shared/components/ErrorBox";
-
-import { USER_ERROR_GENE_EXPRESSION_MESSAGE } from "./constants/messages";
+import DownloadSectionHeader from "@/shared/ui/DownloadSectionHeader";
+import ChartScrollContainer from "@/shared/ui/ChartScrollContainer";
+import ExpressionChart from "@/components/ExpressionChart";
+import { useSvgDownload } from "@/shared/expression/ui/use-svg-download";
+import ExpressionDataTable from "@/shared/ui/ExpressionDataTable";
 
 export default function StructExpression({ gene, organism }) {
   const svgRef = useRef(null);
@@ -35,8 +36,7 @@ export default function StructExpression({ gene, organism }) {
   );
 
   if (!endpoint) {
-    console.error("Gene Expression endp:", endpointError);
-    return <ErrorBoxPageGene text={USER_ERROR_GENE_EXPRESSION_MESSAGE} />;
+    return <PageStateMessage text={endpointError} />;
   }
 
   /* Data fetching */
@@ -46,15 +46,10 @@ export default function StructExpression({ gene, organism }) {
   );
 
   // Normalized data
-  const { data: normalized, error: normalizeError } = useMemo(() => {
-    if (loading || !data) {
-      return { data: [], error: null };
-    }
-    return normalizeExpressionData(data);
-  }, [data, loading]);
+  const normalized = useMemo(() => normalizeExpressionData(data), [data]);
 
   // Seriesd3 data
-  const chartSeries = useMemo(
+  const series = useMemo(
     () => projectExpressionToD3Series(normalized),
     [normalized]
   );
@@ -66,7 +61,9 @@ export default function StructExpression({ gene, organism }) {
   );
 
   /* Button download */
-  const { onDownload } = useGeneExpressionDownload(svgRef, gene);
+  const { onDownload } = useSvgDownload(svgRef, () =>
+    gene?.accessionId ? `${gene.accessionId}.svg` : "gene-expression.svg"
+  );
 
   /* Layout measurement */
   const {
@@ -90,15 +87,11 @@ export default function StructExpression({ gene, organism }) {
   if (loading) {
     return <CircularProgress />;
   }
-
   if (error) {
-    console.error("Gene Expression ftc:", error);
-    return <ErrorBoxPageGene text={USER_ERROR_GENE_EXPRESSION_MESSAGE} />;
+    return <PageStateMessage text={error} />;
   }
-
-  if (normalizeError) {
-    console.error("Gene Expression norm:", normalizeError);
-    return <ErrorBoxPageGene text={USER_ERROR_GENE_EXPRESSION_MESSAGE} />;
+  if (normalized.length === 0) {
+    return <PageStateMessage text={EXPRESSION_EMPTY_AFTER_NORMALIZATION} />;
   }
 
   /* Render */
@@ -118,18 +111,27 @@ export default function StructExpression({ gene, organism }) {
         pt: 2,
       }}
     >
-      <ExpressionHeader onDownload={onDownload} />
-
-      <ExpressionChartContainer
-        series={chartSeries}
-        svgRef={svgRef}
-        width={chartWidth}
+      {/* Actions */}
+      <DownloadSectionHeader
+        title="Gene Expression (Z-Score)"
+        onDownload={onDownload}
       />
 
-      <ExpressionTableMui
+      {/* Visualization */}
+      <ChartScrollContainer width={chartWidth}>
+        <ExpressionChart
+          series={series}
+          columnWidth={20}
+          graphType="scorez"
+          svgRef={svgRef}
+        />
+      </ChartScrollContainer>
+
+      {/* Data table */}
+      <ExpressionDataTable
+        title={`Gene Expression Table for ${gene.accessionId}`}
         columns={tableColumns}
         data={tableRows}
-        gene={gene}
         width={chartWidth}
       />
     </Box>

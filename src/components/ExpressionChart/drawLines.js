@@ -68,7 +68,8 @@ export function drawLines({ svg, layout, scales, transcripts, interactions }) {
   // Draw lines
   const lines = lineG
     .selectAll(".line")
-    .data(transcripts)
+    //.data(transcripts)
+    .data(transcripts, (d) => d.transcriptId)
     .join("path")
     .attr("class", "line")
     .attr("d", (d) => lineGen(d.values))
@@ -82,14 +83,19 @@ export function drawLines({ svg, layout, scales, transcripts, interactions }) {
   // Public helpers
   svg.node().__highlightLine = (transcriptId) => {
     lines.attr("stroke", "#888").attr("opacity", 0.6);
-    const idx = transcripts.findIndex((t) => t.transcriptId === transcriptId);
+    lines
+      .filter((d) => d.transcriptId === transcriptId)
+      .raise()
+      .attr("stroke", "#000")
+      .attr("opacity", 1);
+  };
+  /**const idx = transcripts.findIndex((t) => t.transcriptId === transcriptId);
     if (idx !== -1) {
       d3.select(lines.nodes()[idx])
         .raise()
         .attr("stroke", "#000")
         .attr("opacity", 1);
-    }
-  };
+    } */
 
   svg.node().__highlightPoint = (d) => {
     focusG.selectAll("*").remove();
@@ -111,7 +117,8 @@ export function drawLines({ svg, layout, scales, transcripts, interactions }) {
   // Hit paths for hover
   lineG
     .selectAll(".hit-path")
-    .data(transcripts)
+    //.data(transcripts)
+    .data(transcripts, (d) => d.transcriptId)
     .join("path")
     .attr("class", "hit-path")
     .attr("d", (d) => lineGen(d.values))
@@ -137,7 +144,8 @@ export function drawLines({ svg, layout, scales, transcripts, interactions }) {
 
   lineG
     .selectAll(".pt-hit")
-    .data(allPoints)
+    //.data(allPoints)
+    .data(allPoints, (d) => `${d.transcriptId}::${d.condition}`)
     .join("circle")
     .attr("class", "pt-hit")
     .attr("cx", (d) => xLine(d.condition))

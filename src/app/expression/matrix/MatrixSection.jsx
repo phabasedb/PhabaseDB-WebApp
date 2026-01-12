@@ -1,55 +1,91 @@
 "use client";
 
 // standard
-import { useMemo } from "react";
+import { useRef, useMemo, useEffect } from "react";
 
 // third party
 import { Box, CircularProgress, Alert } from "@mui/material";
 
 // local
 import { useExpressionByIds } from "@/integrations/expression/gene";
+
 import { normalizeExpressionData } from "@/shared/expression/normalizers/normalize-expression";
-import { ErrorBoxPageExpressionAtlas } from "../shared/components/ErrorBox";
-import { MatrixContainer } from "./MatrixContainer";
-import { USER_ERROR_MATRIX_LOAD_MESSAGE } from "../constants/messages";
+import { projectExpressionToD3Series } from "@/shared/expression/projections/expression-series-d3";
+import { projectExpressionToMuiTable } from "@/shared/expression/projections/expression-table-mui";
+
+import { PageStateMessage } from "../shared/components/PageStateMessage";
+import { EXPRESSION_EMPTY_AFTER_NORMALIZATION } from "@/shared/expression/constants/statesMessages";
+
+import useContainerWidth from "@/shared/expression/ui/container-width";
+import useBreakpointWidth from "@/shared/expression/ui/breakpoints-width";
+
+import DownloadSectionHeader from "@/shared/ui/DownloadSectionHeader";
+import ChartScrollContainer from "@/shared/ui/ChartScrollContainer";
+import ExpressionChart from "@/components/ExpressionChart";
+import { useSvgDownload } from "@/shared/expression/ui/use-svg-download";
+import ExpressionDataTable from "@/shared/ui/ExpressionDataTable";
 
 export function MatrixSection({ endpoint, ids, columns, graphType }) {
+  const svgRef = useRef(null);
+
+  /* Endpoint */
+  if (!endpoint) {
+    return (
+      <PageStateMessage text={"Expression Atlas is currently unavailable."} />
+    );
+  }
+
+  /* Data fetching */
   const { data, notFoundIds, loading, error } = useExpressionByIds(
     endpoint,
     ids,
     columns
   );
 
-  const { data: normalized, error: normalizeError } = useMemo(() => {
-    if (loading || !data) {
-      return { data: [], error: null };
+  // Normalized data
+  const normalized = useMemo(() => normalizeExpressionData(data), [data]);
+
+  // Seriesd3 data
+  const series = useMemo(
+    () => projectExpressionToD3Series(normalized),
+    [normalized]
+  );
+
+  // MuiTable data
+  const { columns: tableColumns, data: tableRows } = useMemo(
+    () => projectExpressionToMuiTable(normalized),
+    [normalized]
+  );
+
+  const { onDownload } = useSvgDownload(svgRef, () => "expression-atlas.svg");
+
+  /* Layout measurement */
+  const {
+    ref: containerRef,
+    width: containerWidth,
+    measure,
+  } = useContainerWidth();
+
+  const fallbackWidth = useBreakpointWidth();
+
+  useEffect(() => {
+    if (normalized && normalized.length > 0) {
+      measure();
     }
-    return normalizeExpressionData(data);
-  }, [data, loading]);
+  }, [normalized, measure]);
 
+  const chartWidth =
+    containerWidth && containerWidth > 0 ? containerWidth : fallbackWidth;
+
+  /* States */
   if (loading) {
-    return (
-      <Box sx={{ textAlign: "center" }}>
-        <CircularProgress />
-      </Box>
-    );
+    return <CircularProgress />;
   }
-
   if (error) {
-    console.error("Matrix ftc:", error);
-    return (
-      <ErrorBoxPageExpressionAtlas text={USER_ERROR_MATRIX_LOAD_MESSAGE} />
-    );
+    return <PageStateMessage text={error} />;
   }
-  if (normalizeError) {
-    console.error("Matrix norm:", normalizeError);
-    return (
-      <ErrorBoxPageExpressionAtlas text={USER_ERROR_MATRIX_LOAD_MESSAGE} />
-    );
-  }
-
-  if (!normalized.length) {
-    return null;
+  if (normalized.length === 0) {
+    return <PageStateMessage text={EXPRESSION_EMPTY_AFTER_NORMALIZATION} />;
   }
 
   return (
@@ -60,9 +96,45 @@ export function MatrixSection({ endpoint, ids, columns, graphType }) {
         </Alert>
       )}
 
-      {normalized.length > 0 && (
-        <MatrixContainer data={normalized} graphType={graphType} />
-      )}
+      <Box
+        ref={containerRef}
+        sx={{
+          width: "90%",
+          background: "white",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          overflow: "hidden",
+          borderRadius: 2,
+          boxShadow: 5,
+          gap: 1,
+          pt: 2,
+        }}
+      >
+        {/* Actions */}
+        <DownloadSectionHeader
+          title="Expression Atlas"
+          onDownload={onDownload}
+        />
+
+        {/* Visualization */}
+        <ChartScrollContainer width={chartWidth}>
+          <ExpressionChart
+            series={series}
+            columnWidth={20}
+            graphType={graphType}
+            svgRef={svgRef}
+          />
+        </ChartScrollContainer>
+
+        {/* Data table */}
+        <ExpressionDataTable
+          title="Expression Atlas - DataTable"
+          columns={tableColumns}
+          data={tableRows}
+          width={chartWidth}
+        />
+      </Box>
     </>
   );
 }
