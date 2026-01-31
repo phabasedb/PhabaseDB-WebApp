@@ -24,6 +24,8 @@ export const FRIENDLY_MESSAGES = {
     "No expression data has been found for the introduced genes.",
   // Errors
   INVALID_JSON: "The request could not be processed. Please check your input.",
+  IDS_LIMIT_EXCEEDED:
+    "Maximum 50 IDs per query. Please split your search and try again.",
 
   // =========================
   // Shared API errors

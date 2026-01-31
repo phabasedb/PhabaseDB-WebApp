@@ -23,6 +23,7 @@ import { datasets } from "@/static/expression/datasets";
 import { MetadataSection } from "./metadata/MetadataSection";
 import { MatrixSection } from "./matrix/MatrixSection";
 
+import { FRIENDLY_MESSAGES } from "@/integrations/expression/constants/friendlyMessages";
 import useContainerWidth from "@/shared/expression/ui/container-width";
 import useBreakpointWidth from "@/shared/expression/ui/breakpoints-width";
 
@@ -79,11 +80,17 @@ export default function ExpressionWorkflow() {
     setMatrixEndpoint("");
   };
 
+  const MAX_IDS = 50;
   const handleGeneExpression = () => {
     const idsList = idsText
       .split(/\s+/)
       .map((id) => id.trim())
       .filter((id) => id !== "");
+
+    if (idsList.length > MAX_IDS) {
+      alert(FRIENDLY_MESSAGES.IDS_LIMIT_EXCEEDED);
+      return;
+    }
 
     setMatrixIds(idsList);
     setMatrixColumns(selectedLibraries);
@@ -96,6 +103,13 @@ export default function ExpressionWorkflow() {
     setMatrixEndpoint(endpoint);
     setTriggerMatrix(true);
   };
+
+  const placeHolder = [
+    "Paste IDs separated by spaces...",
+    "Examples:",
+    "PvNJ1.1_chr10_0251000 PvNJ1.1_chr10_0251900...",
+    "...",
+  ].join("\n");
 
   /* Render*/
   return (
@@ -209,8 +223,9 @@ export default function ExpressionWorkflow() {
               <TextField
                 multiline
                 fullWidth
-                rows={3}
-                placeholder="Paste IDs separated by spaces..."
+                minRows={3}
+                maxRows={5}
+                placeholder={placeHolder}
                 value={idsText}
                 onChange={(e) => setIdsText(e.target.value)}
               />

@@ -39,7 +39,7 @@ export function computeLayout({ conditions, transcripts, columnWidth }) {
   const maxConditionLen = conditions.length
     ? Math.max(...conditions.map((c) => c.length))
     : 0;
-  const marginBottom = maxConditionLen * 6 + 10; // Calculate the lower margin using the longest condition and the additional increment.
+  const marginBottom = maxConditionLen * 7 + 10; // Calculate the lower margin using the longest condition and the additional increment.
 
   // Total chart drawing width (column width × number of conditions)
   const chartWidth =
@@ -47,8 +47,8 @@ export function computeLayout({ conditions, transcripts, columnWidth }) {
     (conditions.length <= 15
       ? 3 * conditions.length
       : conditions.length <= 30
-      ? 2 * conditions.length
-      : conditions.length);
+        ? 2 * conditions.length
+        : conditions.length);
   // original formulate
   //const chartWidth = columnWidth * conditions.length;
 
