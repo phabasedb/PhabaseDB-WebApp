@@ -26,6 +26,8 @@ export const FRIENDLY_MESSAGES = {
   INVALID_JSON: "The request could not be processed. Please check your input.",
   IDS_LIMIT_EXCEEDED:
     "Maximum 50 IDs per query. Please split your search and try again.",
+  INVALID_COLUMNS:
+    "One or more selected conditions are not available for this dataset. Please review your selection.",
 
   // =========================
   // Shared API errors

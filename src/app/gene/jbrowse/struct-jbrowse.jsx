@@ -26,7 +26,7 @@ export default function StructJBrowse({ gene, organism, chromosome }) {
     if (!dataset) {
       return {
         url: null,
-        internalMessage: `Dataset not found for organism id: ${organism.id}`,
+        internalMessage: `Dataset not found for organism`,
       };
     }
 
