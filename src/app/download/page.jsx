@@ -8,7 +8,7 @@ import { download } from "@/static/download/config";
 import { formatFileSize } from "./utils/formatFileSize";
 import highlightText from "@/shared/text/utils/highlight-text";
 
-//production = "/downloads" : development = "http://localhost:3000/downloads"
+//production = "/downloads"
 const DOWNLOADS_BASE_URL = "/downloads";
 
 export default function DownloadsPage() {
