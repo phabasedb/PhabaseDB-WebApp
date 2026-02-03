@@ -15,6 +15,7 @@
 //local
 import { useAllGenes } from "./useAllGenes";
 import { useGeneByTerm } from "./useGeneByTerm";
+import { useGeneByOrganism } from "./useGeneByOrganism";
 
 export function useGeneSearch(term, { limit, page }) {
   const trimmedTerm = term?.trim();
@@ -22,6 +23,21 @@ export function useGeneSearch(term, { limit, page }) {
 
   if (normalizedTerm === "GENES") {
     return useAllGenes({ limit, page });
+  } else if (normalizedTerm === "JAMAPA") {
+    return useGeneByOrganism(normalizedTerm, "PDBJAMAPAORG000001", {
+      limit,
+      page,
+    });
+  } else if (normalizedTerm === "G19833") {
+    return useGeneByOrganism(normalizedTerm, "PDBG19833ORG000001", {
+      limit,
+      page,
+    });
+  } else if (normalizedTerm === "BAT93") {
+    return useGeneByOrganism(normalizedTerm, "PDBBAT93AORG000001", {
+      limit,
+      page,
+    });
   }
 
   return useGeneByTerm(trimmedTerm, { limit, page });

@@ -68,15 +68,14 @@ export function useBlast({
     !allowGaps && args.push("-ungapped");
     args.push(
       type === "nucleotide" ? "-dust" : "-seg",
-      filterQuery ? "yes" : "no"
+      filterQuery ? "yes" : "no",
     );
     type === "protein" && matrix && args.push("-matrix", matrix);
 
     const advancedParams = args.join(" ");
-    const uri =
-      type === "nucleotide"
-        ? process.env.NEXT_PUBLIC_URI_BLASTN
-        : process.env.NEXT_PUBLIC_URI_BLASTP;
+
+    const endpoint = type === "nucleotide" ? "blastn" : "blastp";
+    const uri = `${process.env.NEXT_PUBLIC_URI_BLAST}/${endpoint}`;
 
     try {
       const res = await fetch(uri, {
@@ -87,18 +86,18 @@ export function useBlast({
           db: selected,
           params: advancedParams,
         }),
-        signal, // <-- le pasamos la señal al fetch
+        signal,
       });
 
       if (!res.ok) {
         if (res.status === 502) {
           throw new Error(
-            "The BLAST service is not available at this time. Please try again later or contact an administrator."
+            "The BLAST service is not available at this time. Please try again later or contact an administrator.",
           );
         }
         if (res.status === 504) {
           throw new Error(
-            "The request to the BLAST service has taken too long and has timed out. Please try again in a few minutes or reduce the size of your query and check parameters."
+            "The request to the BLAST service has taken too long and has timed out. Please try again in a few minutes or reduce the size of your query and check parameters.",
           );
         }
         const { message } = await res.json();

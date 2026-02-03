@@ -22,7 +22,12 @@ export default function SearchHistory() {
   const [history, setHistory] = useState([]);
   const router = useRouter();
 
-  const generalTerms = [{ label: "GENE BROWSER", term: "GENES" }];
+  const generalTerms = [
+    { label: "GENE BROWSER", term: "GENES" },
+    { label: "JAMAPA", term: "JAMAPA" },
+    { label: "G19833", term: "G19833" },
+    { label: "BAT93", term: "BAT93A" },
+  ];
 
   useEffect(() => {
     const storedHistory =

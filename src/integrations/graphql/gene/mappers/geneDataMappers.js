@@ -32,8 +32,8 @@ export function mapGeneDetail(record) {
     gene: {
       accessionId: record.gene?.accessionId,
       name: record.gene?.name || "",
-      start: record.gene?.startPosition ?? 0,
-      end: record.gene?.endPosition ?? 0,
+      start: record.gene?.start ?? 0,
+      end: record.gene?.end ?? 0,
       strand: record.gene?.strand || "",
       sequence: record.gene?.sequence || "",
       length: record.gene?.length ?? 0,
@@ -54,8 +54,8 @@ export function mapGeneDetail(record) {
     transcripts: (record.transcripts || []).map((tx) => ({
       id: tx._id,
       accessionId: tx.accessionId,
-      start: tx.startPosition ?? 0,
-      end: tx.endPosition ?? 0,
+      start: tx.start ?? 0,
+      end: tx.end ?? 0,
       strand: tx.strand || "",
       sequence: tx.sequence || "",
       length: tx.length ?? 0,
@@ -67,22 +67,22 @@ export function mapGeneDetail(record) {
       },
 
       utrs: (tx.utrs || []).map((u) => ({
-        start: u?.startPosition ?? 0,
-        end: u?.endPosition ?? 0,
+        start: u?.start ?? 0,
+        end: u?.end ?? 0,
         sequence: u?.sequence || "",
         type: u?.type || "",
       })),
 
       exons: (tx.exons || []).map((e) => ({
-        start: e?.startPosition ?? 0,
-        end: e?.endPosition ?? 0,
+        start: e?.start ?? 0,
+        end: e?.end ?? 0,
         sequence: e?.sequence || "",
         type: e?.type || "",
       })),
 
       cds: (tx.cds || []).map((c) => ({
-        start: c?.startPosition ?? 0,
-        end: c?.endPosition ?? 0,
+        start: c?.start ?? 0,
+        end: c?.end ?? 0,
         sequence: c?.sequence || "",
         type: c?.type || "",
       })),

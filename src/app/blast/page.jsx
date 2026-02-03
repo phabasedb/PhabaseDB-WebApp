@@ -66,17 +66,19 @@ export default function BlastPage() {
     return () => URL.revokeObjectURL(url);
   }, [htmlResult]);
 
-  const handleToggle = (path) => () => {
+  const handleToggle = (database) => () => {
     setSelected((prev) =>
-      prev.includes(path) ? prev.filter((p) => p !== path) : [...prev, path]
+      prev.includes(database)
+        ? prev.filter((p) => p !== database)
+        : [...prev, database],
     );
   };
 
-  const formatScientificName = (name) => {
+  const formatScientificName = (title) => {
     const sci = ["Lotus japonicus", "Phaseolus vulgaris"];
     return (
       <>
-        {name
+        {title
           .split(new RegExp(`(${sci.join("|")})`, "g"))
           .map((str, i) => (sci.includes(str) ? <i key={i}>{str}</i> : str))}
       </>
@@ -186,25 +188,25 @@ export default function BlastPage() {
           {datasets.map((dbGroup, i) => {
             const items = dbGroup[type] || [];
             return (
-              <Box key={dbGroup.database}>
+              <Box key={dbGroup.organism}>
                 <Typography variant="subtitle1" fontWeight={500}>
-                  {dbGroup.database}
+                  {dbGroup.organism}
                 </Typography>
                 {items.length > 0 ? (
                   <List dense>
                     {items.map((ds) => {
-                      const isChecked = selected.includes(ds.path);
+                      const isChecked = selected.includes(ds.database);
                       return (
-                        <ListItem key={ds.path} disablePadding>
+                        <ListItem key={ds.database} disablePadding>
                           <ListItemIcon>
                             <Checkbox
                               edge="start"
-                              onChange={handleToggle(ds.path)}
+                              onChange={handleToggle(ds.database)}
                               checked={isChecked}
                             />
                           </ListItemIcon>
                           <ListItemText
-                            primary={formatScientificName(ds.name)}
+                            primary={formatScientificName(ds.title)}
                           />
                         </ListItem>
                       );
