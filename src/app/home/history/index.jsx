@@ -24,9 +24,9 @@ export default function SearchHistory() {
 
   const generalTerms = [
     { label: "GENE BROWSER", term: "GENES" },
-    { label: "JAMAPA", term: "JAMAPA" },
-    { label: "G19833", term: "G19833" },
-    { label: "BAT93", term: "BAT93A" },
+    { label: "Phaseolus vulgaris cv. Negro Jamapa", term: "JAMAPA" },
+    { label: "Phaseolus vulgaris cv. G19833", term: "G19833" },
+    { label: "Phaseolus vulgaris cv. BAT93", term: "BAT93" },
   ];
 
   useEffect(() => {
@@ -65,11 +65,11 @@ export default function SearchHistory() {
               textTransform: "none",
               color: "#0B3AA1",
               fontSize: {
-                xs: "1rem",
-                sm: "1.1rem",
-                md: "1.2rem",
-                lg: "1.5rem",
-                xl: "1.6rem",
+                xs: "0.8rem",
+                sm: "0.9rem",
+                md: "1.1rem",
+                lg: "1.4rem",
+                xl: "1.5rem",
               },
               p: 1,
             }}

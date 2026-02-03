@@ -61,7 +61,7 @@ export default function StructTable({ term }) {
       { name: "chromosomeName", label: "Chromosome Name" },
       { name: "organismName", label: "Organism Name" },
     ],
-    [router]
+    [router],
   );
 
   const options = useMemo(
@@ -70,6 +70,7 @@ export default function StructTable({ term }) {
       filter: false,
       viewColumns: true,
       print: false,
+      sort: false,
       responsive: "simple",
       selectableRows: "none",
       download: false,
@@ -92,7 +93,7 @@ export default function StructTable({ term }) {
         }
       },
     }),
-    [pagination, limit]
+    [pagination, limit],
   );
 
   return (
